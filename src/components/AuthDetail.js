@@ -1,6 +1,5 @@
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
-import { Button } from 'semantic-ui-react'
 import {auth} from '../firebase'
 
 const AuthDetail = () => {
