@@ -151,11 +151,6 @@ const Register = () => {
                       value={email}
                       onChange={handleChange}
                     />
-                    {/* <Form.Input
-                      label="Upload"
-                      type="file"
-                      onChange={(e) => setFile(e.target.files[0])}
-                    /> */}
                     <Button
                       primary
                       type="submit"

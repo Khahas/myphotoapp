@@ -19,6 +19,7 @@ const AuthDetail = () => {
         }
 
     }, [])
+    
 
     const userSignOut = () => {
         signOut(auth).then(() => {
