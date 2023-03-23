@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route} from "react-router-dom"
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
-import Image from "./pages/Image"
+import Image from "./pages/Image";
 import NavBar from "./components/NavBar";
 import Users from "./pages/Users";
 import Album from "./pages/Album";
 import Login from "./components/Login";
-import Sign from "./components/Sign"
+import Sign from "./components/Sign";
 import AuthDetail from "./components/AuthDetail";
-
+import ShowAlbum from "./pages/ShowAlbum";
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +25,7 @@ function App() {
           <Route path="/add" element={<Register />} />
           <Route path="/addImage" element={<Image />} />
           <Route path="/update/:id" element={<Register />} />
+          <Route path="/show-album/:albumId" element={<ShowAlbum />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,21 +1,24 @@
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import React, { useState } from 'react'
-import { auth } from '../firebase'
-import { Button, Form, } from "semantic-ui-react";
-
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { auth } from "../firebase";
+import { Button, Form } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-    const logIn = (e) => {
-        e.preventDefault()
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log(userCredential)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
+  const logIn = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        navigate("/album");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="sign-in-container">
@@ -33,10 +36,10 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></Form.Input>
-        <Button type='submit'>Log in</Button>
+        <Button type="submit">Log in</Button>
       </Form>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

@@ -114,9 +114,9 @@ const Register = () => {
         console.log(error);
       }
     }
-
-    navigate("/users");
+    navigate("/");
   };
+
   return (
     <div>
       <Grid

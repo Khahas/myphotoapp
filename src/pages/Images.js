@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { db, auth } from "../firebase";
+import { db } from "../firebase";
 import { Button, Card, Container, Grid, Image } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import ModalComp from "../components/ModalComp";
 import Spinner from "../components/Spinner";
 import Album from "./Album";
-import { query, where } from "firebase/firestore";
 
 const Home = () => {
   const [images, setImages] = useState([]);
@@ -17,39 +16,22 @@ const Home = () => {
 
   useEffect(() => {
     setLoading(true);
-    let unsub = undefined;
-
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const uid = user.uid;
-
-        // use uid to query the database
-        const albumsRef = collection(db, "albums");
-        unsub = onSnapshot(
-          query(albumsRef, where("user_id", "==", uid)),
-          (snapshot) => {
-            let list = [];
-            snapshot.docs.forEach((doc) => {
-              list.push({ id: doc.id, ...doc.data() });
-            });
-            setImages(list);
-            console.log("list: ", list);
-            setLoading(false);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      } else {
-        // user is not logged in
+    const unsub = onSnapshot(
+      collection(db, "images"),
+      (snapshot) => {
+        let list = [];
+        snapshot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setImages(list);
+        setLoading(false);
+      },
+      (error) => {
+        console.log(error);
       }
-    });
-
-    // return the unsub function to be called when the component unmounts
+    );
     return () => {
-      if (unsub) {
-        unsub();
-      }
+      unsub();
     };
   }, []);
 
@@ -66,7 +48,7 @@ const Home = () => {
     if (window.confirm("Are you sure!!")) {
       try {
         setOpen(false);
-        await deleteDoc(doc(db, "albums", id));
+        await deleteDoc(doc(db, "images", id));
         setImages(images.filter((image) => image.id !== id));
       } catch (err) {
         console.log(err);
@@ -88,32 +70,27 @@ const Home = () => {
               <Card>
                 <Card.Content>
                   <Image
-                    src={item.cover}
+                    src={item.img}
                     size="medium"
                     style={{
                       height: "150px",
-                      width: "100%",
+                      width: "150px",
+                      borderRadius: " 50%",
                     }}
                   />
                   <Card.Header style={{ marginTop: "10px" }}>
-                    {item.title}
+                    {item.name}
                   </Card.Header>
                 </Card.Content>
                 <Card.Content extra>
                   <div>
-                    {/* <Button
+                    <Button
                       color="green"
                       onClick={() => navigate(`/update/${item.id}`)}
                     >
                       update
-                    </Button> */}
-                    <Button color="red" onClick={() => handleDelete(item.id)}>
-                      Delete
                     </Button>
-                    <Button
-                      color="purple"
-                      onClick={() => navigate(`show-album/${item.id}`)}
-                    >
+                    <Button color="purple" onClick={() => handleModal(item)}>
                       view
                     </Button>
                     {open && (

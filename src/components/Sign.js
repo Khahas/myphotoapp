@@ -1,22 +1,24 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import React, { useState } from 'react'
-import { auth } from '../firebase'
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { auth } from "../firebase";
 import { Button, Form } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const crea = (e) => {
-        e.preventDefault()
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            console.log(userCredential);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const crea = (e) => {
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="sign-in-container">
@@ -34,10 +36,10 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></Form.Input>
-        <Button type='submit'>create</Button>
+        <Button type="submit">create</Button>
       </Form>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;
